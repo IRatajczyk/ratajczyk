@@ -8,9 +8,8 @@
     <artifactId>readersWriters</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
-    <modules>
-        <module>Reader</module>
-    </modules>
+
+
 
     <name>ReadersWriters</name>
     <url>http://www.example.com</url>
@@ -56,6 +55,9 @@
                 <sonar.organization>uknowmee</sonar.organization>
                 <sonar.host.url>https://sonarcloud.io</sonar.host.url>
             </properties>
+            <modules>
+                <module>Reader</module>
+            </modules>
         </profile>
     </profiles>
 
