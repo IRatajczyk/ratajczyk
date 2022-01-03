@@ -1,6 +1,8 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 /***
  * Class that implements resources in Reader-Writer Problem
@@ -43,7 +45,7 @@ public class Resource {
      * Simple getter
      * @return the very resource to be written
      */
-    public ArrayList<Integer> getBook() {
+    public List<Integer> getBook() {
         return book;
     }
 
@@ -82,6 +84,7 @@ public class Resource {
      * @throws InterruptedException in case of interruption
      */
     public void write(int writerId, int value) throws InterruptedException {
+
         if (!prepareForWriting){
             return;
         }
@@ -90,14 +93,13 @@ public class Resource {
                 try {
                     System.out.println("Writer " + writerId + " would like to get access to a resource");
                     this.wait();
-                } catch (InterruptedException e) {
-                }
+                } catch (InterruptedException ignored) {}
             }
             currentlyWriting++;
             System.out.println("Writer " + writerId + " has begun writing");
             book.add(value);
             try {
-                Thread.sleep(getSleep());
+                this.wait(getSleep());
             } catch (InterruptedException e) {
             }
             currentlyWriting--;
@@ -129,8 +131,7 @@ public class Resource {
         }
         try{
             Thread.sleep(10L *getSleep());
-        }catch(InterruptedException e){}
-
+        }catch(InterruptedException ignored){}
         synchronized(this){
             currentlyReading--;
             System.out.println("Reader "+readerId+" has finished reading");

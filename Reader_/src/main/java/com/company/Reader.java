@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.Objects;
+
 /***
  * Class that implements Reader in Writer-Reader Problem
  * stands for process that cannot change the resource.
@@ -30,9 +32,13 @@ public class Reader extends Thread{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Reader)) return false;
-        Reader reader = (Reader) o;
-        return getReaderId() == reader.getReaderId();
+        if (!(o instanceof Reader reader)) return false;
+        return getReaderId() == reader.getReaderId() && Objects.equals(resource, reader.resource);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getReaderId(), resource);
     }
 
     /***
@@ -48,7 +54,7 @@ public class Reader extends Thread{
         while(true){
             try{
                 Thread.sleep(getSleep());
-            }catch(InterruptedException e){}
+            }catch(InterruptedException ignored){}
             try {
                 resource.read(readerId);
             } catch (InterruptedException e) {

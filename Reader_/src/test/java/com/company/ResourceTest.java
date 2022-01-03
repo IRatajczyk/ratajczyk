@@ -2,7 +2,7 @@ package com.company;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
@@ -25,7 +25,7 @@ public class ResourceTest {
     @Test
     public void checkBook(){
         Resource r = new Resource(5);
-        ArrayList<Integer> b = r.getBook();
+        List<Integer> b = r.getBook();
         assertTrue(b.isEmpty());
     }
 

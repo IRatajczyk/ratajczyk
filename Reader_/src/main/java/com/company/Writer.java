@@ -1,6 +1,8 @@
 package com.company;
 
 
+import java.util.Objects;
+
 public class Writer extends Thread{
 
     private final int writerId;
@@ -27,11 +29,14 @@ public class Writer extends Thread{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Writer)) return false;
-        Writer writer = (Writer) o;
-        return getWriterId() == writer.getWriterId();
+        if (!(o instanceof Writer writer)) return false;
+        return getWriterId() == writer.getWriterId() && Objects.equals(resource, writer.resource);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getWriterId(), resource);
+    }
 
     /***
      * Method dedicated to getting sleeping time
