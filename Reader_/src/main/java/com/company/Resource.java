@@ -2,6 +2,7 @@ package com.company;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 /***
@@ -19,6 +20,8 @@ public class Resource {
 
     private boolean prepareForWriting;
 
+    private Random r;
+
     /***
      * Trivial constructor
      * @param maxNoReaders maximal number of readers at one time
@@ -31,6 +34,7 @@ public class Resource {
         currentlyWriting = 0;
         currentlyReading = 0;
         prepareForWriting = true;
+        this.r = new Random();
     }
 
     /***
@@ -47,6 +51,22 @@ public class Resource {
      */
     public List<Integer> getBook() {
         return book;
+    }
+
+    /***
+     * Simple getter
+     * @return the array of writers
+     */
+    public ArrayList<Writer> getWriters() {
+        return writers;
+    }
+
+    /***
+     * Simple getter
+     * @return the array of readers
+     */
+    public ArrayList<Reader> getReaders() {
+        return readers;
     }
 
     /***
@@ -84,29 +104,38 @@ public class Resource {
      * @throws InterruptedException in case of interruption
      */
     public void write(int writerId, int value) throws InterruptedException {
-
+        String s = "Writer ";
         if (!prepareForWriting){
+            prepareForWriting = true;
             return;
         }
         synchronized (this) {
             while (currentlyWriting > 0 || !prepareForWriting) {
                 try {
-                    System.out.println("Writer " + writerId + " would like to get access to a resource");
+                    System.out.println(s + writerId + " would like to get access to a resource");
                     this.wait();
                 } catch (InterruptedException ignored) {}
             }
             currentlyWriting++;
-            System.out.println("Writer " + writerId + " has begun writing");
+            System.out.println(s + writerId + " has begun writing");
             book.add(value);
             try {
                 this.wait(getSleep());
             } catch (InterruptedException e) {
             }
             currentlyWriting--;
-            System.out.println("Writer " + writerId + " has finished writing");
+            System.out.println(s + writerId + " has finished writing");
             prepareForWriting = false;
             this.notifyAll();
         }
+    }
+
+    /***
+     * Method dedicated to getting sleeping time
+     * @return randomized time of sleep
+     */
+    public int getSleep(){
+        return r.nextInt(1000);
     }
 
     /***
@@ -142,11 +171,4 @@ public class Resource {
         }
     }
 
-    /***
-     * Method dedicated to getting sleeping time
-     * @return randomized time of sleep
-     */
-    private int getSleep(){
-        return (int) (Math.random() * 100);
-    }
 }

@@ -1,6 +1,8 @@
 package com.company;
 
 import java.util.Objects;
+import java.util.Random;
+
 
 /***
  * Class that implements Reader in Writer-Reader Problem
@@ -10,7 +12,7 @@ public class Reader extends Thread{
 
     final int readerId;
     final Resource resource;
-
+    Random r;
     /***
      * Trivial constructor
      * @param id id of reader
@@ -19,6 +21,7 @@ public class Reader extends Thread{
     public Reader(int id, Resource resource){
         this.readerId = id;
         this.resource = resource;
+        this.r = new Random();
     }
 
     /***
@@ -45,8 +48,8 @@ public class Reader extends Thread{
      * Method dedicated to getting sleeping time
      * @return randomized time of sleep
      */
-    private int getSleep(){
-        return (int) (Math.random() * 1000);
+    public int getSleep(){
+        return r.nextInt(1000);
     }
 
     @Override

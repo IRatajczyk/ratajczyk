@@ -2,12 +2,13 @@ package com.company;
 
 
 import java.util.Objects;
+import java.util.Random;
 
 public class Writer extends Thread{
 
     private final int writerId;
     private final Resource resource;
-
+    private Random r;
     /***
      * Trivial constructor
      * @param id id of writer
@@ -16,6 +17,7 @@ public class Writer extends Thread{
     public Writer(int id, Resource resource){
         this.writerId = id;
         this.resource = resource;
+        this.r = new Random();
     }
 
     /***
@@ -43,7 +45,7 @@ public class Writer extends Thread{
      * @return randomized time of sleep
      */
     private int getSleep(){
-        return (int) (Math.random() * 1000);
+        return (int) (Math.random() * 5000);
     }
 
     @Override
